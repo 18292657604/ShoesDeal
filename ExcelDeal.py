@@ -59,8 +59,9 @@ def set_row_height(row_obj, height):
 '''
     导入到Excel
 '''
-def excel(outPath):
+def excel(t, outPath):
     try:
+        print(str(t) + '===========================')
         # 如果excel中有文件，则在后面添加
         rb = xlrd.open_workbook(outPath, formatting_info=True)
         if rb != '':
@@ -87,9 +88,11 @@ def excel(outPath):
         # 获取合计的内容
         total_content = sheet_read.cell(total_index, 5).value
 
-        wb_sheet.col(1).width= 256 * 8
-        wb_sheet.col(2).width= 256 * 30
-        wb_sheet.col(6).width= 256 * 20
+        items_name = sheet_read.cell(5, 5).value
+
+        wb_sheet.col(1).width = 256 * 8
+        wb_sheet.col(2).width = 256 * 30
+        wb_sheet.col(6).width = 256 * 20
         # 要把鞋装多少箱
         box_num = (int(total_content/10))+1
 
@@ -99,7 +102,6 @@ def excel(outPath):
             box_num = (int(total_content / 10))
         else:
             box_num = (int(total_content / 10)) + 1
-
         # 添加sheet 制作封装箱单子
         box_sheet = workbook.add_sheet("装箱单")
 
@@ -124,67 +126,75 @@ def excel(outPath):
         accept_index = 6
         page = 0
         for i in range(box_num):
-            #设置行高
-            set_row_height(box_sheet.row(num), 40)
-            set_row_height(box_sheet.row(num+1), 27)
-            set_row_height(box_sheet.row(num+2), 27)
-            set_row_height(box_sheet.row(num+3), 27)
-            set_row_height(box_sheet.row(num+4), 27)
-            set_row_height(box_sheet.row(num+5), 27)
-            set_row_height(box_sheet.row(num+6), 27)
-            set_row_height(box_sheet.row(num+7), 27)
-            set_row_height(box_sheet.row(num+8), 27)
-            set_row_height(box_sheet.row(num+9), 27)
-            set_row_height(box_sheet.row(num+10), 27)
-            set_row_height(box_sheet.row(num+11), 40)
-            set_row_height(box_sheet.row(num+12), 27)
+            # 打印两份
+            for j in range(2):
+                #设置行高
+                set_row_height(box_sheet.row(num), 40)
+                set_row_height(box_sheet.row(num+1), 27)
+                set_row_height(box_sheet.row(num+2), 27)
+                set_row_height(box_sheet.row(num+3), 27)
+                set_row_height(box_sheet.row(num+4), 27)
+                set_row_height(box_sheet.row(num+5), 27)
+                set_row_height(box_sheet.row(num+6), 27)
+                set_row_height(box_sheet.row(num+7), 27)
+                set_row_height(box_sheet.row(num+8), 27)
+                set_row_height(box_sheet.row(num+9), 27)
+                set_row_height(box_sheet.row(num+10), 27)
+                set_row_height(box_sheet.row(num+11), 40)
+                set_row_height(box_sheet.row(num+12), 27)
 
 
-            box_sheet.write_merge(num, num, 0, 6, '消防救援制式服装和标志服饰装箱单', set_style(0, 1, '黑体', 440, True, 1, 0, False))
-            box_sheet.write_merge(num + 1, num + 1, 0, 5, '单位：消防高等专科学校 教学保障大队 教学保障大队干部', other_style)
-            box_sheet.write(num + 1, 6, '共 '+ str(box_num) +' 箱', content_style)
+                box_sheet.write_merge(num, num, 0, 6, '消防救援制式服装和标志服饰装箱单', set_style(0, 1, '黑体', 440, True, 1, 0, False))
+                box_sheet.write_merge(num + 1, num + 1, 0, 5, '单位：消防高等专科学校 教学保障大队 教学保障大队干部', other_style)
+                box_sheet.write(num + 1, 6, '共 '+ str(box_num) + ' 箱', content_style)
 
-            box_sheet.write_merge(num + 2, num + 2, 0, 5, '品名：19消防春秋作训鞋（双）', other_style)
-            box_sheet.write(num + 2, 6, '第 '+ str(i + 1) +' 箱', content_style)
+                box_sheet.write_merge(num + 2, num + 2, 0, 5, '品名：' + items_name + '（双）', other_style)
+                box_sheet.write(num + 2, 6, '第 '+ str(i + 1) + ' 箱', content_style)
 
-            box_sheet.write(num + 3, 0, '序号', content_style)
-            box_sheet.write(num + 3, 1, '号型', content_style)
-            box_sheet.write(num + 3, 2, '数量', content_style)
+                box_sheet.write(num + 3, 0, '序号', content_style)
+                box_sheet.write(num + 3, 1, '号型', content_style)
+                box_sheet.write(num + 3, 2, '数量', content_style)
 
-            box_sheet.write(num + 3, 4, '序号', content_style)
-            box_sheet.write(num + 3, 5, '号型', content_style)
-            box_sheet.write(num + 3, 6, '数量', content_style)
+                box_sheet.write(num + 3, 4, '序号', content_style)
+                box_sheet.write(num + 3, 5, '号型', content_style)
+                box_sheet.write(num + 3, 6, '数量', content_style)
 
-            box_sheet.write(num +4, 0, 1, content_style)
-            box_sheet.write(num +5, 0, 2, content_style)
-            box_sheet.write(num +6, 0, 3, content_style)
-            box_sheet.write(num +7, 0, 4, content_style)
-            box_sheet.write(num +8, 0, 5, content_style)
+                box_sheet.write(num +4, 0, 1, content_style)
+                box_sheet.write(num +5, 0, 2, content_style)
+                box_sheet.write(num +6, 0, 3, content_style)
+                box_sheet.write(num +7, 0, 4, content_style)
+                box_sheet.write(num +8, 0, 5, content_style)
 
-            box_sheet.write(num + 4, 4, 6, content_style)
-            box_sheet.write(num + 5, 4, 7, content_style)
-            box_sheet.write(num + 6, 4, 8, content_style)
-            box_sheet.write(num + 7, 4, 9, content_style)
-            box_sheet.write(num + 8, 4, 10, content_style)
+                box_sheet.write(num + 4, 4, 6, content_style)
+                box_sheet.write(num + 5, 4, 7, content_style)
+                box_sheet.write(num + 6, 4, 8, content_style)
+                box_sheet.write(num + 7, 4, 9, content_style)
+                box_sheet.write(num + 8, 4, 10, content_style)
 
-            # ===================================
-            # 返回下一个接受数量的开始
-            #如果是最后一箱
-            if (box_num-1)==i:
-                accept_index = pac_boxes(accept_index, total_index, sheet_read, box_sheet, num + 4, True, content_style)
-                # 最后一箱的数量
-                last_num = int(total_content) % 10
-                box_sheet.write_merge(num + 9, num + 9, 0, 6, '本箱内合计数量:' + str(last_num) + '双', content_style)
-            else:
-                accept_index = pac_boxes(accept_index, total_index, sheet_read, box_sheet, num + 4, False, content_style)
-                box_sheet.write_merge(num + 9, num + 9, 0, 6, '本箱内合计数量:10双', content_style)
-            # ===============================================
+                # ===================================
+                # 返回下一个接受数量的开始
+                #如果是最后一箱
+                if (box_num-1)==i:
+                    accept_index = pac_boxes(j, accept_index, total_index, sheet_read, box_sheet, num + 4, True, content_style)
+                    # 最后一箱的数量
+                    if (int(total_content) % 10) == 0:
+                        last_num = 10
+                    else:
+                        last_num = int(total_content) % 10
+                    box_sheet.write_merge(num + 9, num + 9, 0, 6, '本箱内合计数量:' + str(last_num) + '双', content_style)
+                else:
 
-            box_sheet.write_merge(num + 10, num + 10, 0, 6, '联系人： 王宁，朱忠奎    联系电话：13769160919，18208805630', other_style)
-            box_sheet.write_merge(num + 11, num + 11, 0, 6, '地址： 云南省 昆明市 经开区 云南省昆明市官渡区阿拉乡小石坝公安消防部队高等专科学校教学保障大队收', other_style)
-            box_sheet.write_merge(num + 12, num + 12, 0, 6, '生产厂家：际华三五一三实业有限公司', set_style(0, 0, '黑体', 410, False, 1, 0, False))
 
-            num += 14
+                    accept_index = pac_boxes(j, accept_index, total_index, sheet_read, box_sheet, num + 4, False, content_style)
+                    box_sheet.write_merge(num + 9, num + 9, 0, 6, '本箱内合计数量:10双', content_style)
+
+                # ===============================================
+
+                box_sheet.write_merge(num + 10, num + 10, 0, 6, '联系人： 王宁，朱忠奎    联系电话：13769160919，18208805630', other_style)
+                box_sheet.write_merge(num + 11, num + 11, 0, 6, '地址： 云南省 昆明市 经开区 云南省昆明市官渡区阿拉乡小石坝公安消防部队高等专科学校教学保障大队收', other_style)
+                box_sheet.write_merge(num + 12, num + 12, 0, 6, '生产厂家：际华三五一三实业有限公司', set_style(0, 0, '黑体', 410, False, 1, 0, False))
+
+                num += 14
 
             # 分页设置
             box_sheet.horz_page_breaks = [(page, page, (page+28))]
@@ -193,19 +203,49 @@ def excel(outPath):
         # 保存excel
         workbook.save(outPath)
     except Exception as e:
-        print('sheet重复：%s' %(e))
+        # print('错误：' %(e))
+        print('错误')
+
+#  鞋子集合为全局变量
+# 10双一盒
+rest_shoes_list = []
+# 存放多余的型号
+rest_model_sex = set()
+box_total = 0
+# 将10只鞋装一箱子
 '''
 last 最后一次接收数量的下标，用于处理最后几双鞋，不满10双的  True为最后一箱
+total_index 合计的行数
+num 控制下一个表单
+last 为是否最后一条数据
+accept_index 数据录入的位置
+j 是打印两份
 '''
-# 将10只鞋装一箱子
-def pac_boxes(j, total_index, sheet_read, box_sheet, num, last, content_style):
+def pac_boxes(j, accept_index, total_index, sheet_read, box_sheet, num, last, content_style):
+
+    global rest_shoes_list
+
+    global rest_model_sex
+
+    global box_total
+
+    # 存放鞋的信息
     shoes_list = []
-    # 10双一盒
-    # 专门存放型号
-    model_sex = set()
-    box_total = 0;
+
+    # 表示有剩余的鞋
+    if len(rest_shoes_list) > 0:
+        model_sex = set(rest_model_sex)
+        shoes_list.extend(rest_shoes_list)
+
+        rest_shoes_list.clear()
+        rest_model_sex.clear()
+    else:
+        # 专门存放型号
+        model_sex = set()
+
     index = 0
-    for i in range((j+1), total_index, 1):
+    for i in range((accept_index+1), total_index, 1):
+
         #存放1盒中的型号
         model_sex.add(sheet_read.cell(i, 3).value)
 
@@ -218,16 +258,38 @@ def pac_boxes(j, total_index, sheet_read, box_sheet, num, last, content_style):
         box_total += int(sheet_read.cell(i, 5).value)
         # 如果装够10双鞋，结束本次循环，重新开始装
         if last==False:
-            if box_total == 10:
-                box_total = 0
+            # 如果鞋大于10双
+            if box_total >= 10:
+                if box_total ==10:
+                    box_total = 0
+
+                else:
+                    box_total -= 10
+                    shoes_list[len(shoes_list)-1]['num'] = box_total
                 modelNum(model_sex, shoes_list, box_sheet, num, content_style)
+
                 index = i
+
+                # 如果还有数据则
+                if box_total > 0:
+
+                    rest_model_sex.clear()
+                    rest_shoes_list.clear()
+
+                    shoes_dict['model'] = str(sheet_read.cell(i, 3).value)
+                    shoes_dict['num'] = int(box_total)
+                    rest_shoes_list.append(shoes_dict)
+
+                    # 存储剩余的型号
+                    rest_model_sex.add(sheet_read.cell(i, 3).value)
                 break
-    if last==True:
+
+
+    if last == True:
         modelNum(model_sex, shoes_list, box_sheet, num, content_style)
 
     # 加空白格的边框
-    if len(model_sex)<5:
+    if len(model_sex) <= 5:
         model_length = num + len(model_sex)
         for i in range(model_length, (num + 10), 1):
             if i<(num+5):
@@ -241,7 +303,10 @@ def pac_boxes(j, total_index, sheet_read, box_sheet, num, last, content_style):
         for j in range(model_length, (num + 5), 1):
             box_sheet.write(j, 5, '', content_style)
             box_sheet.write(j, 6, '', content_style)
-    return index
+    if j == 1:
+        return index
+    else:
+        return accept_index
 '''
     将型号数量写入列表中
 '''

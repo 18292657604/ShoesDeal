@@ -14,7 +14,7 @@ if __name__ == "__main__":
     print('======================')
     for t in range(len(fileNameLest)):
         fileName = mkdir_path + str(fileNameLest[t])
-        excel(fileName)
+        excel(t, fileName)
         print(fileName + "====处理成功")
         print('======================')
     print('所有文件处理成功')
