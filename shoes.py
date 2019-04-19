@@ -1,6 +1,6 @@
 from ExcelDeal import excel
 import os
-
+import time
 
 # 获取目录中所有的文件列表
 def getAllFile(mkdir_path):

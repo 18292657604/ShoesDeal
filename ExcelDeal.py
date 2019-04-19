@@ -90,6 +90,18 @@ def excel(t, outPath):
 
         items_name = sheet_read.cell(5, 5).value
 
+        # 收货单位
+        recive_unit = str(sheet_read.cell(3, 1).value).split('：')[1]
+
+        # 收货地址
+        recive_address = str(sheet_read.cell(2, 1).value.split('：')[1]).strip()
+
+        #收货人
+        revice_person = str(sheet_read.cell(4, 1).value.split('：')[1]).strip()
+
+        #联系电话
+        tel = str(sheet_read.cell(4, 3).value.split('：')[1]).strip()
+
         wb_sheet.col(1).width = 256 * 8
         wb_sheet.col(2).width = 256 * 30
         wb_sheet.col(6).width = 256 * 20
@@ -130,7 +142,7 @@ def excel(t, outPath):
             for j in range(2):
                 #设置行高
                 set_row_height(box_sheet.row(num), 40)
-                set_row_height(box_sheet.row(num+1), 27)
+                set_row_height(box_sheet.row(num+1), 40)
                 set_row_height(box_sheet.row(num+2), 27)
                 set_row_height(box_sheet.row(num+3), 27)
                 set_row_height(box_sheet.row(num+4), 27)
@@ -139,13 +151,13 @@ def excel(t, outPath):
                 set_row_height(box_sheet.row(num+7), 27)
                 set_row_height(box_sheet.row(num+8), 27)
                 set_row_height(box_sheet.row(num+9), 27)
-                set_row_height(box_sheet.row(num+10), 27)
+                set_row_height(box_sheet.row(num+10), 40)
                 set_row_height(box_sheet.row(num+11), 40)
                 set_row_height(box_sheet.row(num+12), 27)
 
 
                 box_sheet.write_merge(num, num, 0, 6, '消防救援制式服装和标志服饰装箱单', set_style(0, 1, '黑体', 440, True, 1, 0, False))
-                box_sheet.write_merge(num + 1, num + 1, 0, 5, '单位：消防高等专科学校 教学保障大队 教学保障大队干部', other_style)
+                box_sheet.write_merge(num + 1, num + 1, 0, 5, '单位：' + recive_unit, other_style)
                 box_sheet.write(num + 1, 6, '共 '+ str(box_num) + ' 箱', content_style)
 
                 box_sheet.write_merge(num + 2, num + 2, 0, 5, '品名：' + items_name + '（双）', other_style)
@@ -190,8 +202,8 @@ def excel(t, outPath):
 
                 # ===============================================
 
-                box_sheet.write_merge(num + 10, num + 10, 0, 6, '联系人： 王宁，朱忠奎    联系电话：13769160919，18208805630', other_style)
-                box_sheet.write_merge(num + 11, num + 11, 0, 6, '地址： 云南省 昆明市 经开区 云南省昆明市官渡区阿拉乡小石坝公安消防部队高等专科学校教学保障大队收', other_style)
+                box_sheet.write_merge(num + 10, num + 10, 0, 6, '联系人：'+ revice_person + '    联系电话：' + tel, other_style)
+                box_sheet.write_merge(num + 11, num + 11, 0, 6, '地址：' + recive_address, other_style)
                 box_sheet.write_merge(num + 12, num + 12, 0, 6, '生产厂家：际华三五一三实业有限公司', set_style(0, 0, '黑体', 410, False, 1, 0, False))
 
                 num += 14
@@ -203,8 +215,7 @@ def excel(t, outPath):
         # 保存excel
         workbook.save(outPath)
     except Exception as e:
-        # print('错误：' %(e))
-        print('错误')
+        print('错误：')
 
 #  鞋子集合为全局变量
 # 10双一盒
@@ -287,6 +298,9 @@ def pac_boxes(j, accept_index, total_index, sheet_read, box_sheet, num, last, co
 
     if last == True:
         modelNum(model_sex, shoes_list, box_sheet, num, content_style)
+        box_total = 0
+        rest_model_sex.clear()
+        rest_shoes_list.clear()
 
     # 加空白格的边框
     if len(model_sex) <= 5:
@@ -299,7 +313,7 @@ def pac_boxes(j, accept_index, total_index, sheet_read, box_sheet, num, last, co
                 box_sheet.write(i-5, 5, '', content_style)
                 box_sheet.write(i-5, 6, '', content_style)
     else:
-        model_length = len(model_sex)-5
+        model_length = len(model_sex)-5 + num
         for j in range(model_length, (num + 5), 1):
             box_sheet.write(j, 5, '', content_style)
             box_sheet.write(j, 6, '', content_style)
@@ -312,6 +326,8 @@ def pac_boxes(j, accept_index, total_index, sheet_read, box_sheet, num, last, co
 '''
 def modelNum(model_sex, shoes_list, box_sheet, num, content_style):
     # 将10只鞋装箱盒中
+    # 计算循环的次数
+    i = 1
     for model in model_sex:
         # 按型号取得数量
         model_num = 0
@@ -325,12 +341,17 @@ def modelNum(model_sex, shoes_list, box_sheet, num, content_style):
         if len(model_sex) <= 5:
             model_col = 1
             num_col = 2
+        elif i<=5:
+            model_col = 1
+            num_col = 2
         else:
             model_col = 5
             num_col = 6
+            num -= 5
         box_sheet.write(num, model_col, model, content_style)
         box_sheet.write(num, num_col, model_num, content_style)
         num += 1
+        i += 1
 
 
 
