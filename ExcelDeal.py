@@ -141,19 +141,19 @@ def excel(t, outPath):
             # 打印两份
             for j in range(2):
                 #设置行高
-                set_row_height(box_sheet.row(num), 40)
-                set_row_height(box_sheet.row(num+1), 40)
-                set_row_height(box_sheet.row(num+2), 27)
-                set_row_height(box_sheet.row(num+3), 27)
-                set_row_height(box_sheet.row(num+4), 27)
-                set_row_height(box_sheet.row(num+5), 27)
-                set_row_height(box_sheet.row(num+6), 27)
-                set_row_height(box_sheet.row(num+7), 27)
-                set_row_height(box_sheet.row(num+8), 27)
-                set_row_height(box_sheet.row(num+9), 27)
-                set_row_height(box_sheet.row(num+10), 40)
-                set_row_height(box_sheet.row(num+11), 40)
-                set_row_height(box_sheet.row(num+12), 27)
+                set_row_height(box_sheet.row(num), 36)
+                set_row_height(box_sheet.row(num+1), 36)
+                set_row_height(box_sheet.row(num+2), 26)
+                set_row_height(box_sheet.row(num+3), 26)
+                set_row_height(box_sheet.row(num+4), 26)
+                set_row_height(box_sheet.row(num+5), 26)
+                set_row_height(box_sheet.row(num+6), 26)
+                set_row_height(box_sheet.row(num+7), 26)
+                set_row_height(box_sheet.row(num+8), 26)
+                set_row_height(box_sheet.row(num+9), 26)
+                set_row_height(box_sheet.row(num+10), 36)
+                set_row_height(box_sheet.row(num+11), 36)
+                set_row_height(box_sheet.row(num+12), 26)
 
 
                 box_sheet.write_merge(num, num, 0, 6, '消防救援制式服装和标志服饰装箱单', set_style(0, 1, '黑体', 440, True, 1, 0, False))
@@ -195,8 +195,6 @@ def excel(t, outPath):
                         last_num = int(total_content) % 10
                     box_sheet.write_merge(num + 9, num + 9, 0, 6, '本箱内合计数量:' + str(last_num) + '双', content_style)
                 else:
-
-
                     accept_index = pac_boxes(j, accept_index, total_index, sheet_read, box_sheet, num + 4, False, content_style)
                     box_sheet.write_merge(num + 9, num + 9, 0, 6, '本箱内合计数量:10双', content_style)
 
@@ -314,9 +312,9 @@ def pac_boxes(j, accept_index, total_index, sheet_read, box_sheet, num, last, co
                 box_sheet.write(i-5, 6, '', content_style)
     else:
         model_length = len(model_sex)-5 + num
-        for j in range(model_length, (num + 5), 1):
-            box_sheet.write(j, 5, '', content_style)
-            box_sheet.write(j, 6, '', content_style)
+        for b in range(model_length, (num + 5), 1):
+            box_sheet.write(b, 5, '', content_style)
+            box_sheet.write(b, 6, '', content_style)
     if j == 1:
         return index
     else:
