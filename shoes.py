@@ -1,6 +1,7 @@
-from ExcelDeal import excel
+from format.ten.ExcelTenDeal import excel_ten
+from format.twenty.ExcelTwentyDeal import excel_twenty
 import os
-import time
+
 
 # 获取目录中所有的文件列表
 def getAllFile(mkdir_path):
@@ -9,15 +10,29 @@ def getAllFile(mkdir_path):
 
 if __name__ == "__main__":
     mkdir_path = input("请输入目录路径:")
-    fileNameLest = getAllFile(mkdir_path)
+    type = input("请输入规则的类型(注10、20):")
 
-    print('======================')
-    for t in range(len(fileNameLest)):
-        fileName = mkdir_path + str(fileNameLest[t])
-        excel(t, fileName)
-        print(fileName + "====处理成功")
-        print('======================')
-    print('所有文件处理成功')
+    type = int(type)
+
+    if type == 10 or type == 20:
+        fileNameLest = getAllFile(mkdir_path)
+        for t in range(len(fileNameLest)):
+            fileName = mkdir_path + str(fileNameLest[t])
+
+            if type == 10:
+                # 10装箱
+                result = excel_ten(fileName)
+            else:
+                # 20装箱
+                result = excel_twenty(fileName)
+
+            if result == True:
+                print(fileName + "====处理成功")
+            else:
+                print(fileName + "====处理失败")
+        print('所有文件处理成功')
+    else:
+        print("不符合规定请重新输入：")
 
 
 
