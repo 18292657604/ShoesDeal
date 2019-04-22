@@ -6,6 +6,8 @@ rest_shoes_list_twenty = []
 rest_model_sex_twenty = set()
 # 将20只鞋装一箱子
 box_total_twenty = 0
+# 剩余鞋的总数
+remain_shoes_num = 0
 '''
 last 最后一次接收数量的下标，用于处理最后几双鞋，不满10双的  True为最后一箱
 total_index 合计的行数
@@ -23,6 +25,13 @@ def pac_boxes_twenty(j, accept_index, total_index, sheet_read, box_sheet, num, l
     global rest_model_sex_twenty
 
     global box_total_twenty
+
+    global remain_shoes_num
+
+    if num == 4 and j == 0:
+        # 将总数赋值给remain_shoes_num
+        remain_shoes_num = total
+
 
     # 存放鞋的信息
     shoes_list = []
@@ -52,29 +61,47 @@ def pac_boxes_twenty(j, accept_index, total_index, sheet_read, box_sheet, num, l
         box_total_twenty += int(sheet_read.cell(i, 5).value)
         # 如果装够20 、10 、个位数箱鞋 就满一箱，到下一次循环
         if last == False:
-            if total >= 20 and box_total_twenty >= 20:
+            if remain_shoes_num >= 20 and box_total_twenty >= 20:
                 # 20箱装
                 if box_total_twenty == 20:
                     box_total_twenty = 0
-                    total -= 20
+                    if j == 1:
+                        remain_shoes_num -= 20
                 else:
                     box_total_twenty -= 20
-                    total -= 20 - box_total_twenty
-                    shoes_list[len(shoes_list) - 1]['num'] = box_total_twenty
-                modelNum(model_sex, shoes_list, box_sheet, num, content_style)
-            elif total > 10 and box_total_twenty >= 10:
-                # 10箱装
-                if box_total_twenty == 10:
-                    box_total_twenty = 0
-                    total -= 10
-                else:
-                    box_total_twenty -= 10
-                    total -= 10 - box_total_twenty
+                    if j == 1:
+                        remain_shoes_num -= 20 - box_total_twenty
                     shoes_list[len(shoes_list) - 1]['num'] = box_total_twenty
                 modelNum(model_sex, shoes_list, box_sheet, num, content_style)
 
                 index = i
+                # 如果还有数据则
+                if box_total_twenty > 0:
+                    rest_model_sex_twenty.clear()
+                    rest_shoes_list_twenty.clear()
 
+                    shoes_dict['model'] = str(sheet_read.cell(i, 3).value)
+                    shoes_dict['num'] = int(box_total_twenty)
+                    rest_shoes_list_twenty.append(shoes_dict)
+
+                    # 存储剩余的型号
+                    rest_model_sex_twenty.add(sheet_read.cell(i, 3).value)
+                break
+
+            elif remain_shoes_num >= 10 and remain_shoes_num < 20 and box_total_twenty >= 10:
+                # 10箱装
+                if box_total_twenty == 10:
+                    box_total_twenty = 0
+                    if j == 1:
+                        remain_shoes_num -= 10
+                else:
+                    box_total_twenty -= 10
+                    if j == 1:
+                        remain_shoes_num -= 10 - box_total_twenty
+                    shoes_list[len(shoes_list) - 1]['num'] = box_total_twenty
+                modelNum(model_sex, shoes_list, box_sheet, num, content_style)
+
+                index = i
                 # 如果还有数据则
                 if box_total_twenty > 0:
                     rest_model_sex_twenty.clear()
