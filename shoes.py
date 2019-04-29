@@ -1,12 +1,7 @@
 from format.ten.ExcelTenDeal import excel_ten
 from format.twenty.ExcelTwentyDeal import excel_twenty
-import os
+from util import getAllFile
 
-
-# 获取目录中所有的文件列表
-def getAllFile(mkdir_path):
-    for root, dirs, files in os.walk(mkdir_path):
-        return files
 
 # 开始转换
 def startConvert(mkdir_path, type):
@@ -30,6 +25,9 @@ def startConvert(mkdir_path, type):
         print('所有文件处理成功')
     else:
         print("不符合规定请重新输入：")
+
+
+
 
 if __name__ == "__main__":
     mkdir_path = input("请输入目录路径:")
