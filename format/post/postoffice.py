@@ -14,6 +14,7 @@ def postoffice(i, fromPath, toPath):
         else:
             # 创建excel
             workbook = xlwt.Workbook()
+            workbook.add_sheet('收货信息')
         # 读取第一个工作表中（索引顺序获取）
         from_sheet = from_rb.sheet_by_index(0)
 
