@@ -5,11 +5,10 @@ from util import getAllFile
 
 # 开始转换
 def startConvert(mkdir_path, type):
-    type = int(type)
     if type == 10 or type == 20:
         fileNameLest = getAllFile(mkdir_path)
         for t in range(len(fileNameLest)):
-            fileName = mkdir_path + str(fileNameLest[t])
+            fileName = mkdir_path + '/' +str(fileNameLest[t])
 
             if type == 10:
                 # 10装箱
