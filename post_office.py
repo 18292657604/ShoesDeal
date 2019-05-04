@@ -1,13 +1,15 @@
-from util import getAllFile
+from util import getFilelist
 from format.post.postoffice import postoffice
+
 
 # 打包成邮局的格式
 def post(mkdir_path, out_path, type):
-    fileNameLest = getAllFile(mkdir_path)
+    # 下标
+    index = 0
+    fileNameLest = getFilelist(mkdir_path)
     for t in range(len(fileNameLest)):
         fileName = mkdir_path + '/' + str(fileNameLest[t])
-        postoffice(t, fileName, out_path, type)
-
+        index = postoffice(index ,fileName, out_path, type)
 
 if __name__ == "__main__":
 

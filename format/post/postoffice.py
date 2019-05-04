@@ -3,7 +3,8 @@ from xlutils.copy import copy
 from format.sheetStyle import *
 
 
-def postoffice(i, fromPath, toPath, type):
+def postoffice(index, fromPath, toPath, type):
+
     try:
         # 如果excel中有文件，则在后面添加
         to_rb = xlrd.open_workbook(toPath, formatting_info=True)
@@ -67,16 +68,19 @@ def postoffice(i, fromPath, toPath, type):
             else:
                 box_num = (int(total_val / 10)) + 1
 
-        # 重写到地址
-        wb_sheet.write(i, 0, i+1)
-        wb_sheet.write(i, 1, revice_person)
-        wb_sheet.write(i, 2, tel)
-        wb_sheet.write(i, 3, recive_unit)
-        wb_sheet.write(i, 4, recive_address)
-        wb_sheet.write(i, 5, box_num)
+        for i in range(0, box_num, 1):
+            # 重写到地址
+            wb_sheet.write(index, 0, index+1)
+            wb_sheet.write(index, 1, revice_person)
+            wb_sheet.write(index, 2, tel)
+            wb_sheet.write(index, 3, recive_unit)
+            wb_sheet.write(index, 4, recive_address)
+            wb_sheet.write(index, 5, 1)
+            index += 1
 
         # 保存excel
         workbook.save(toPath)
+        return index
     except Exception as e:
         print('处理失败 %s' %(e))
 
