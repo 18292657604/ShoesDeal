@@ -1,21 +1,23 @@
 from format.ten.ExcelTenDeal import excel_ten
+from format.five.ExcelFiveDeal import excel_five
 from format.twenty.ExcelTwentyDeal import excel_twenty
 from util import getAllFile
 
 
 # 开始转换
 def startConvert(mkdir_path, type):
-    if type == 10 or type == 20:
+    if type == 10 or type == 20 or type==5:
         fileNameLest = getAllFile(mkdir_path)
         for t in range(len(fileNameLest)):
             fileName = mkdir_path + '/' +str(fileNameLest[t])
-
             if type == 10:
                 # 10装箱
                 result = excel_ten(fileName)
-            else:
+            elif type == 20:
                 # 20装箱
                 result = excel_twenty(fileName)
+            elif type== 5:
+                result = excel_five(fileName)
 
             if result == True:
                 print(fileName + "====处理成功")

@@ -4,7 +4,8 @@
 rest_shoes_list = []
 # 存放多余的型号
 rest_model_sex = set()
-box_total = 0
+# box_total = 0
+rest_box_total = 0
 # 将10只鞋装一箱子
 '''
 last 最后一次接收数量的下标，用于处理最后几双鞋，不满10双的  True为最后一箱
@@ -16,24 +17,28 @@ j 是打印两份
 
 装10箱
 '''
-def pac_boxes_ten(j, accept_index, total_index, sheet_read, box_sheet, num, last, content_style):
+def pac_boxes_five(j, accept_index, total_index, sheet_read, box_sheet, num, last, content_style):
 
     global rest_shoes_list
 
     global rest_model_sex
 
-    global box_total
+    global rest_box_total
+
 
     # 存放鞋的信息
     shoes_list = []
 
     # 表示有剩余的鞋
+    box_total = 0
     if len(rest_shoes_list) > 0:
         model_sex = set(rest_model_sex)
         shoes_list.extend(rest_shoes_list)
+        box_total = rest_box_total
 
         rest_shoes_list.clear()
         rest_model_sex.clear()
+        rest_box_total = 0
     else:
         # 专门存放型号
         model_sex = set()
@@ -54,22 +59,25 @@ def pac_boxes_ten(j, accept_index, total_index, sheet_read, box_sheet, num, last
         # 如果装够10双鞋，结束本次循环，重新开始装
         if last == False:
             # 如果鞋大于10双
-            if box_total >= 10:
-                if box_total == 10:
+            if box_total >= 5:
+                if box_total == 5:
                     box_total = 0
 
                 else:
-                    box_total -= 10
+                    box_total -= 5
                     shoes_list[len(shoes_list) - 1]['num'] = box_total
+
                 modelNum(model_sex, shoes_list, box_sheet, num, content_style)
 
                 index = i
 
                 # 如果还有数据则
-                if box_total > 0:
+                if box_total > 0 and j == 1:
                     rest_model_sex.clear()
                     rest_shoes_list.clear()
+                    rest_box_total = 0
 
+                    rest_box_total = box_total
                     shoes_dict['model'] = str(sheet_read.cell(i, 3).value)
                     shoes_dict['num'] = int(box_total)
                     rest_shoes_list.append(shoes_dict)
@@ -80,7 +88,7 @@ def pac_boxes_ten(j, accept_index, total_index, sheet_read, box_sheet, num, last
 
     if last == True:
         modelNum(model_sex, shoes_list, box_sheet, num, content_style)
-        box_total = 0
+        rest_box_total = 0
         rest_model_sex.clear()
         rest_shoes_list.clear()
 

@@ -1,14 +1,14 @@
 import xlwt
 import xlrd
 from xlutils.copy import copy
-from format.ten.TenPack import pac_boxes_ten
+from format.five.FivePack import pac_boxes_five
 from format.sheetStyle import *
 
 
 '''
     导入到Excel
 '''
-def excel_ten(outPath):
+def excel_five(outPath):
     try:
         # 如果excel中有文件，则在后面添加
         rb = xlrd.open_workbook(outPath, formatting_info=True)
@@ -54,10 +54,10 @@ def excel_ten(outPath):
         wb_sheet.col(2).width = 256 * 30
         wb_sheet.col(6).width = 256 * 20
         # 要把鞋装多少箱
-        if int(total_content) % 10 == 0:
-            box_num = (int(total_content / 10))
+        if int(total_content) % 5 == 0:
+            box_num = (int(total_content / 5))
         else:
-            box_num = (int(total_content / 10)) + 1
+            box_num = (int(total_content / 5)) + 1
         wb_sheet.write(0, 6, '第  箱，共 '+str(box_num)+' 箱', set_style(0, 0, '宋体', 240, False, 1, 0, False))
 
         # 添加sheet 制作封装箱单子
@@ -133,18 +133,16 @@ def excel_ten(outPath):
                 # 如果是最后一箱
                 if (box_num - 1) == i:
                     # 返回下一个接受数量的开始
-                    accept_index = pac_boxes_ten(j, accept_index, total_index, sheet_read, box_sheet, num + 4, True,
-                                                 content_style)
+                    accept_index = pac_boxes_five(j, accept_index, total_index, sheet_read, box_sheet, num + 4, True, content_style)
                     # 最后一箱的数量
-                    if (int(total_content) % 10) == 0:
-                        last_num = 10
+                    if (int(total_content) % 5) == 0:
+                        last_num = 5
                     else:
-                        last_num = int(total_content) % 10
+                        last_num = int(total_content) % 5
                     box_sheet.write_merge(num + 9, num + 9, 0, 6, '本箱内合计数量:' + str(last_num) + '双', content_style)
                 else:
-                    accept_index = pac_boxes_ten(j, accept_index, total_index, sheet_read, box_sheet, num + 4, False,
-                                                 content_style)
-                    box_sheet.write_merge(num + 9, num + 9, 0, 6, '本箱内合计数量:10双', content_style)
+                    accept_index = pac_boxes_five(j, accept_index, total_index, sheet_read, box_sheet, num + 4, False, content_style)
+                    box_sheet.write_merge(num + 9, num + 9, 0, 6, '本箱内合计数量:5双', content_style)
                     # =======================================================
 
                 box_sheet.write_merge(num + 10, num + 10, 0, 6, '联系人：'+ revice_person + '    联系电话：' + tel, other_style)
