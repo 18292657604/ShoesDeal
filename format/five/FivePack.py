@@ -36,9 +36,10 @@ def pac_boxes_five(j, accept_index, total_index, sheet_read, box_sheet, num, las
         shoes_list.extend(rest_shoes_list)
         box_total = rest_box_total
 
-        rest_shoes_list.clear()
-        rest_model_sex.clear()
-        rest_box_total = 0
+        if j == 1:
+            rest_shoes_list.clear()
+            rest_model_sex.clear()
+            rest_box_total = 0
     else:
         # 专门存放型号
         model_sex = set()
@@ -88,9 +89,10 @@ def pac_boxes_five(j, accept_index, total_index, sheet_read, box_sheet, num, las
 
     if last == True:
         modelNum(model_sex, shoes_list, box_sheet, num, content_style)
-        rest_box_total = 0
-        rest_model_sex.clear()
-        rest_shoes_list.clear()
+        if j == 1:
+            rest_box_total = 0
+            rest_model_sex.clear()
+            rest_shoes_list.clear()
 
     # 加空白格的边框
     if len(model_sex) <= 5:
